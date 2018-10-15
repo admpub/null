@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"strconv"
 
-	"github.com/volatiletech/null/convert"
+	"github.com/admpub/null/convert"
 )
 
 // Float64 is a nullable float64.

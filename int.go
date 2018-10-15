@@ -7,7 +7,7 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/volatiletech/null/convert"
+	"github.com/admpub/null/convert"
 )
 
 // Int is an nullable int.

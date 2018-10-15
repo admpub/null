@@ -1,4 +1,4 @@
-## null-extended [![GoDoc](https://godoc.org/github.com/volatiletech/null?status.svg)](https://godoc.org/github.com/volatiletech/null) [![Coverage](http://gocover.io/_badge/github.com/volatiletech/null)](http://gocover.io/github.com/volatiletech/null)
+## null-extended [![GoDoc](https://godoc.org/github.com/admpub/null?status.svg)](https://godoc.org/github.com/admpub/null) [![Coverage](http://gocover.io/_badge/github.com/admpub/null)](http://gocover.io/github.com/admpub/null)
 
 null-extended is a library with reasonable options for dealing with nullable SQL and JSON values
 
@@ -14,11 +14,11 @@ Null used to be versioned with gopkg.in, so once you upgrade to v8 and beyond
 please stop using gopkg.in and ensure you're using `vgo`, `dep` or vendoring
 to version null.
 
-`go get -u "github.com/volatiletech/null"`
+`go get -u "github.com/admpub/null"`
 
 ### null package
 
-`import "github.com/volatiletech/null"`
+`import "github.com/admpub/null"`
 
 The following are all types supported in this package. All types will marshal to JSON null if Invalid or SQL source data is null.
 

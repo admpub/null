@@ -8,7 +8,7 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/volatiletech/null/convert"
+	"github.com/admpub/null/convert"
 )
 
 // Int16 is an nullable int16.
