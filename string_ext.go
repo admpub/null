@@ -1,6 +1,10 @@
 package null
 
-import "github.com/webx-top/echo/param"
+import (
+	"time"
+
+	"github.com/webx-top/echo/param"
+)
 
 func (p String) Stringx() param.String {
 	return param.String(p.String)
@@ -44,4 +48,12 @@ func (p String) Float64() float64 {
 
 func (p String) Bool() bool {
 	return p.Stringx().Bool()
+}
+
+func (p String) Timestamp() time.Time {
+	return p.Stringx().Timestamp()
+}
+
+func (p String) DateTime() time.Time {
+	return p.Stringx().DateTime()
 }

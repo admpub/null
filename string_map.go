@@ -1,6 +1,10 @@
 package null
 
-import "github.com/webx-top/echo/param"
+import (
+	"time"
+
+	"github.com/webx-top/echo/param"
+)
 
 type StringMap map[string]String
 
@@ -62,4 +66,12 @@ func (p StringMap) Float64(key string) float64 {
 
 func (p StringMap) Bool(key string) bool {
 	return p.Stringx(key).Bool()
+}
+
+func (p StringMap) Timestamp(key string) time.Time {
+	return p.Stringx(key).Timestamp()
+}
+
+func (p StringMap) DateTime(key string) time.Time {
+	return p.Stringx(key).DateTime()
 }
