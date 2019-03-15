@@ -20,6 +20,14 @@ func (p StringMap) Interfaces() map[string]interface{} {
 	return result
 }
 
+func (p StringMap) StringMap() param.StringMap {
+	result := param.StringMap{}
+	for k, v := range p {
+		result[k] = param.String(v.String)
+	}
+	return result
+}
+
 func (p StringMap) String(key string) string {
 	return p[key].String
 }
