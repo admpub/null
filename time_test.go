@@ -114,6 +114,18 @@ func TestTimePointer(t *testing.T) {
 	}
 }
 
+func TestTimeIsZero(t *testing.T) {
+	ti := TimeFrom(time.Now())
+	if ti.IsZero() {
+		t.Errorf("IsZero() should be false")
+	}
+
+	null := TimeFromPtr(nil)
+	if !null.IsZero() {
+		t.Errorf("IsZero() should be true")
+	}
+}
+
 func TestTimeScanValue(t *testing.T) {
 	var ti Time
 	err := ti.Scan(timeValue)

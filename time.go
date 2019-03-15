@@ -95,6 +95,11 @@ func (t Time) Ptr() *time.Time {
 	return &t.Time
 }
 
+// IsZero returns true for an invalid Time's value, for potential future omitempty support.
+func (t Time) IsZero() bool {
+	return !t.Valid
+}
+
 // Scan implements the Scanner interface.
 func (t *Time) Scan(value interface{}) error {
 	var err error
