@@ -3,6 +3,7 @@ package null
 import (
 	"time"
 
+	"github.com/webx-top/echo"
 	"github.com/webx-top/echo/param"
 )
 
@@ -32,8 +33,15 @@ func (p StringMap) String(key string) string {
 	return p[key].String
 }
 
-func (p StringMap) Split(key string,sep string,limit ...int) []string {
-	return p.Stringx(key).Split(sep,limit...)
+func (p StringMap) MapFrom(values echo.H) StringMap {
+	for key, value := range values {
+		p[key] = NewString(values.String(key), value != nil)
+	}
+	return p
+}
+
+func (p StringMap) Split(key string, sep string, limit ...int) []string {
+	return p.Stringx(key).Split(sep, limit...)
 }
 
 func (p StringMap) Stringx(key string) param.String {
