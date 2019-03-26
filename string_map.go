@@ -7,6 +7,17 @@ import (
 	"github.com/webx-top/echo/param"
 )
 
+type StringMapSlice []StringMap
+
+func StringMapSliceFrom(list []echo.H) StringMapSlice {
+	result := make([]StringMap, len(list))
+	for k, values := range list {
+		mp := StringMap{}
+		result[k] = mp.MapFrom(values)
+	}
+	return result
+}
+
 type StringMap map[string]String
 
 func (p StringMap) Interfaces() map[string]interface{} {
