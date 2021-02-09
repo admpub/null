@@ -9,7 +9,7 @@ import (
 	"strconv"
 
 	"github.com/admpub/null/convert"
-	"github.com/admpub/sqlboiler/randomize"
+	"github.com/volatiletech/randomize"
 )
 
 // Int32 is an nullable int32.

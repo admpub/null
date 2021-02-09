@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/admpub/sqlboiler/randomize"
+	"github.com/volatiletech/randomize"
 )
 
 // Time is a nullable time.Time. It supports SQL and JSON serialization.
