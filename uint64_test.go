@@ -145,10 +145,13 @@ func TestUint64Scan(t *testing.T) {
 	maybePanic(err)
 	assertUint64(t, i, "scanned uint64")
 
-	var null Uint64
-	err = null.Scan(nil)
+	err = i.Scan(int64(-2))
 	maybePanic(err)
-	assertNullUint64(t, null, "scanned null")
+	assertUint64(t, i, "scanned int64")
+
+	err = i.Scan(nil)
+	maybePanic(err)
+	assertNullUint64(t, i, "scanned null")
 }
 
 func assertUint64(t *testing.T, i Uint64, from string) {
