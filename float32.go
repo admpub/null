@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"strconv"
 
-	"github.com/volatiletech/null/v9/convert"
+	"github.com/aarondl/null/v9/convert"
 )
 
 // Float32 is a nullable float32.

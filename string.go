@@ -5,7 +5,7 @@ import (
 	"database/sql/driver"
 	"encoding/json"
 
-	"github.com/volatiletech/null/v9/convert"
+	"github.com/aarondl/null/v9/convert"
 )
 
 // String is a nullable string. It supports SQL and JSON serialization.
