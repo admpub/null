@@ -9,13 +9,13 @@ import (
 	"strconv"
 
 	"github.com/admpub/null/convert"
-	"github.com/admpub/randomize"
 )
 
 // Int32 is an nullable int32.
 type Int32 struct {
 	Int32 int32
 	Valid bool
+	Set   bool
 }
 
 // NewInt32 creates a new Int32
@@ -23,6 +23,7 @@ func NewInt32(i int32, valid bool) Int32 {
 	return Int32{
 		Int32: i,
 		Valid: valid,
+		Set:   true,
 	}
 }
 
@@ -39,8 +40,20 @@ func Int32FromPtr(i *int32) Int32 {
 	return NewInt32(*i, true)
 }
 
+// IsValid returns true if this carries and explicit value and
+// is not null.
+func (i Int32) IsValid() bool {
+	return i.Set && i.Valid
+}
+
+// IsSet returns true if this carries an explicit value (null inclusive)
+func (i Int32) IsSet() bool {
+	return i.Set
+}
+
 // UnmarshalJSON implements json.Unmarshaler.
 func (i *Int32) UnmarshalJSON(data []byte) error {
+	i.Set = true
 	if bytes.Equal(data, NullBytes) {
 		i.Valid = false
 		i.Int32 = 0
@@ -63,6 +76,7 @@ func (i *Int32) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (i *Int32) UnmarshalText(text []byte) error {
+	i.Set = true
 	if len(text) == 0 {
 		i.Valid = false
 		return nil
@@ -96,6 +110,7 @@ func (i Int32) MarshalText() ([]byte, error) {
 func (i *Int32) SetValid(n int32) {
 	i.Int32 = n
 	i.Valid = true
+	i.Set = true
 }
 
 // Ptr returns a pointer to this Int32's value, or a nil pointer if this Int32 is null.
@@ -114,10 +129,10 @@ func (i Int32) IsZero() bool {
 // Scan implements the Scanner interface.
 func (i *Int32) Scan(value interface{}) error {
 	if value == nil {
-		i.Int32, i.Valid = 0, false
+		i.Int32, i.Valid, i.Set = 0, false, false
 		return nil
 	}
-	i.Valid = true
+	i.Valid, i.Set = true, true
 	return convert.ConvertAssign(&i.Int32, value)
 }
 
@@ -127,21 +142,4 @@ func (i Int32) Value() (driver.Value, error) {
 		return nil, nil
 	}
 	return int64(i.Int32), nil
-}
-
-// Randomize for sqlboiler
-func (i *Int32) Randomize(nextInt func() int64, fieldType string, shouldBeNull bool) {
-	if shouldBeNull {
-		i.Int32 = 0
-		i.Valid = false
-	} else {
-		val, ok := randomize.MediumInt(nextInt, fieldType)
-		if ok {
-			i.Int32 = val
-		} else {
-			i.Int32 = int32(nextInt() % math.MaxInt32)
-		}
-
-		i.Valid = true
-	}
 }

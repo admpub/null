@@ -16,8 +16,7 @@ library in place of `sql.NullXXX`. All types also implement:
 ### Installation
 
 Null used to be versioned with gopkg.in, so once you upgrade to v8 and beyond
-please stop using gopkg.in and ensure you're using `vgo`, `dep` or vendoring to
-version null.
+please stop using gopkg.in and ensure you're using go modules.
 
 `go get -u "github.com/admpub/null"`
 

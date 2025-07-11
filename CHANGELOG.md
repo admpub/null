@@ -3,6 +3,18 @@
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [v9.0.0]
+
+### Added
+
+- Add a new `.Set` that can be introspected to see if things are set.
+  (thanks @razor-1)
+
+### Fixed
+
+- Fix []byte to be base64 encoded in json to match how []byte is handled
+  (thanks @razor-1)
+
 ## [v8.1.2]
 
 ### Fixed

@@ -15,6 +15,7 @@ import (
 type Uint8 struct {
 	Uint8 uint8
 	Valid bool
+	Set   bool
 }
 
 // NewUint8 creates a new Uint8
@@ -22,6 +23,7 @@ func NewUint8(i uint8, valid bool) Uint8 {
 	return Uint8{
 		Uint8: i,
 		Valid: valid,
+		Set:   true,
 	}
 }
 
@@ -38,8 +40,20 @@ func Uint8FromPtr(i *uint8) Uint8 {
 	return NewUint8(*i, true)
 }
 
+// IsValid returns true if this carries and explicit value and
+// is not null.
+func (u Uint8) IsValid() bool {
+	return u.Set && u.Valid
+}
+
+// IsSet returns true if this carries an explicit value (null inclusive)
+func (u Uint8) IsSet() bool {
+	return u.Set
+}
+
 // UnmarshalJSON implements json.Unmarshaler.
 func (u *Uint8) UnmarshalJSON(data []byte) error {
+	u.Set = true
 	if bytes.Equal(data, NullBytes) {
 		u.Valid = false
 		u.Uint8 = 0
@@ -62,6 +76,7 @@ func (u *Uint8) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (u *Uint8) UnmarshalText(text []byte) error {
+	u.Set = true
 	if len(text) == 0 {
 		u.Valid = false
 		return nil
@@ -95,6 +110,7 @@ func (u Uint8) MarshalText() ([]byte, error) {
 func (u *Uint8) SetValid(n uint8) {
 	u.Uint8 = n
 	u.Valid = true
+	u.Set = true
 }
 
 // Ptr returns a pointer to this Uint8's value, or a nil pointer if this Uint8 is null.
@@ -113,10 +129,10 @@ func (u Uint8) IsZero() bool {
 // Scan implements the Scanner interface.
 func (u *Uint8) Scan(value interface{}) error {
 	if value == nil {
-		u.Uint8, u.Valid = 0, false
+		u.Uint8, u.Valid, u.Set = 0, false, false
 		return nil
 	}
-	u.Valid = true
+	u.Valid, u.Set = true, true
 	return convert.ConvertAssign(&u.Uint8, value)
 }
 
@@ -126,15 +142,4 @@ func (u Uint8) Value() (driver.Value, error) {
 		return nil, nil
 	}
 	return int64(u.Uint8), nil
-}
-
-// Randomize for sqlboiler
-func (u *Uint8) Randomize(nextInt func() int64, fieldType string, shouldBeNull bool) {
-	if shouldBeNull {
-		u.Uint8 = 0
-		u.Valid = false
-	} else {
-		u.Uint8 = uint8(nextInt() % math.MaxUint8)
-		u.Valid = true
-	}
 }

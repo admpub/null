@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"database/sql/driver"
 	"encoding/json"
-	"math"
 	"strconv"
 
 	"github.com/admpub/null/convert"
@@ -14,6 +13,7 @@ import (
 type Int struct {
 	Int   int
 	Valid bool
+	Set   bool
 }
 
 // NewInt creates a new Int
@@ -21,6 +21,7 @@ func NewInt(i int, valid bool) Int {
 	return Int{
 		Int:   i,
 		Valid: valid,
+		Set:   true,
 	}
 }
 
@@ -37,8 +38,21 @@ func IntFromPtr(i *int) Int {
 	return NewInt(*i, true)
 }
 
+// IsValid returns true if this carries and explicit value and
+// is not null.
+func (i Int) IsValid() bool {
+	return i.Set && i.Valid
+}
+
+// IsSet returns true if this carries an explicit value (null inclusive)
+func (i Int) IsSet() bool {
+	return i.Set
+}
+
 // UnmarshalJSON implements json.Unmarshaler.
 func (i *Int) UnmarshalJSON(data []byte) error {
+	i.Set = true
+
 	if bytes.Equal(data, NullBytes) {
 		i.Valid = false
 		i.Int = 0
@@ -57,6 +71,7 @@ func (i *Int) UnmarshalJSON(data []byte) error {
 
 // UnmarshalText implements encoding.TextUnmarshaler.
 func (i *Int) UnmarshalText(text []byte) error {
+	i.Set = true
 	if len(text) == 0 {
 		i.Valid = false
 		return nil
@@ -90,6 +105,7 @@ func (i Int) MarshalText() ([]byte, error) {
 func (i *Int) SetValid(n int) {
 	i.Int = n
 	i.Valid = true
+	i.Set = true
 }
 
 // Ptr returns a pointer to this Int's value, or a nil pointer if this Int is null.
@@ -108,10 +124,10 @@ func (i Int) IsZero() bool {
 // Scan implements the Scanner interface.
 func (i *Int) Scan(value interface{}) error {
 	if value == nil {
-		i.Int, i.Valid = 0, false
+		i.Int, i.Valid, i.Set = 0, false, false
 		return nil
 	}
-	i.Valid = true
+	i.Valid, i.Set = true, true
 	return convert.ConvertAssign(&i.Int, value)
 }
 
@@ -121,15 +137,4 @@ func (i Int) Value() (driver.Value, error) {
 		return nil, nil
 	}
 	return int64(i.Int), nil
-}
-
-// Randomize for sqlboiler
-func (i *Int) Randomize(nextInt func() int64, fieldType string, shouldBeNull bool) {
-	if shouldBeNull {
-		i.Int = 0
-		i.Valid = false
-	} else {
-		i.Int = int(int32(nextInt() % math.MaxInt32))
-		i.Valid = true
-	}
 }
